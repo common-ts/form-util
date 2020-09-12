@@ -52,8 +52,14 @@ export function focusFirstElement(form: any): void {
     if (!(ctrl.readOnly || ctrl.disabled)) {
       let nodeName = ctrl.nodeName;
       const type = ctrl.getAttribute('type');
-      if (nodeName === 'INPUT' && type !== null) {
-        nodeName = type.toUpperCase();
+      if (type) {
+        const t = type.toUpperCase();
+        if (t === 'SUBMIT') {
+          ctrl.focus();
+        }
+        if (nodeName === 'INPUT') {
+          nodeName = t;
+        }
       }
       if (nodeName !== 'BUTTON'
         && nodeName !== 'RESET'
@@ -61,10 +67,9 @@ export function focusFirstElement(form: any): void {
         && nodeName !== 'CHECKBOX'
         && nodeName !== 'RADIO') {
         ctrl.focus();
-        ctrl.scrollIntoView();
         try {
           ctrl.setSelectionRange(0, ctrl.value.length);
-        } catch (error) {
+        } catch (err) {
         }
         return;
       }
@@ -141,7 +146,6 @@ export function parentByClass(ctrl: any, className: string): any {
     }
   }
 }
-
 
 export function getDataFields(form: any): any[] {
   let results = [];
